@@ -6,11 +6,11 @@
 
 ## Source of Truth Priority
 - Trust files in this order for planning and edits:
-  1. `memory-bank/tech-stack.md` (project positioning and setup intent)
-  2. `memory-bank/prd.md` (scope and product requirements)
+  1. `docs/api-spec.md` (cloud function contracts and response schema)
+  2. `docs/db-schema.md` (collections, fields, indexes, security constraints)
   3. `docs/architecture.md` (module split and naming conventions)
-  4. `docs/api-spec.md` (cloud function contracts and response schema)
-  5. `docs/db-schema.md` (collections, fields, indexes, security constraints)
+  4. `memory-bank/prd.md` (scope and product requirements)
+  5. `memory-bank/tech-stack.md` (project positioning and setup intent)
 
 ## Repo-Specific Conventions to Preserve
 - Keep documentation in Simplified Chinese unless the user explicitly requests another language.
@@ -27,6 +27,14 @@
   - terminology consistency (`store_id`, order/payment status enums, function names),
   - no conflicts between PRD, architecture, API spec, and DB schema,
   - examples match declared contracts.
+- "验证测试"默认是人工验收：使用微信开发者工具与云开发控制台进行可复现检查；当前阶段不强制自动化测试脚本。
+
+## Confirmed Execution Rules
+- Payment success is finalized only by `payment-callback`; frontend payment results are informational only. In `dev`, controlled callback simulation is allowed; in `prod`, only real callbacks count.
+- `auth-verify-booking` data source in V1 is cloud DB `bookings` only (no real-time external PMS integration).
+- Naming rule is fixed: API fields use `camelCase`; DB fields use `snake_case`; mapping is done at cloud-function boundaries.
+- V1 admin scope includes backend cloud-function capabilities only (permissions/validation/data writes). Admin UI pages are optional and not a release gate.
+- Release approval is by project owner and requires: flow A/B/C pass, payment-callback rule pass, permission checks pass, sensitive-data checks pass, and `memory-bank/progress.md` updated.
 
 ## Additional Mandatory Rules
 - 写任何代码前必须完整阅读 `memory-bank/architecture.md`。

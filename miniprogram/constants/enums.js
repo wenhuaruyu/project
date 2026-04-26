@@ -1,0 +1,18 @@
+const PAY_STATUS = Object.freeze({
+  UNPAID: "UNPAID",
+  PAID: "PAID",
+  REFUNDED: "REFUNDED"
+})
+
+const ORDER_STATUS = Object.freeze({
+  PENDING_PAY: "PENDING_PAY",
+  PAID: "PAID",
+  PREPARING: "PREPARING",
+  COMPLETED: "COMPLETED",
+  CANCELLED: "CANCELLED"
+})
+
+module.exports = {
+  PAY_STATUS,
+  ORDER_STATUS
+}

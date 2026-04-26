@@ -66,12 +66,17 @@ guihua-home/
 │
 ├─ cloudfunctions/                      # 云函数（核心业务逻辑）
 │  ├─ auth-verify-booking/
+│  ├─ store-info-get/
 │  ├─ guest-profile-submit/
 │  ├─ guide-query/
+│  ├─ guide-detail-get/
 │  ├─ product-query/
+│  ├─ product-detail-get/
 │  ├─ order-create/
 │  ├─ order-pay/
 │  ├─ payment-callback/
+│  ├─ order-list-query/
+│  ├─ order-detail-get/
 │  ├─ inventory-lock/
 │  └─ admin-content-manage/
 │
@@ -116,11 +121,14 @@ guihua-home/
 
 ### 3.2 云函数模块（BFF 层）
 - `auth-verify-booking`：校验预订身份与小程序访问资格。
+- `store-info-get`：读取门店入住信息并返回脱敏 Wi-Fi 信息。
 - `guest-profile-submit`：写入客户登记信息并处理脱敏与校验。
-- `guide-query` / `product-query`：查询攻略与商品，支持筛选分页。
+- `guide-query` / `guide-detail-get`：查询攻略列表与详情，支持筛选分页。
+- `product-query` / `product-detail-get`：查询商品列表与详情。
 - `order-create`：创建订单、校验价格、锁定库存。
 - `order-pay`：发起支付参数。
 - `payment-callback`：支付结果回调，更新订单与库存状态。
+- `order-list-query` / `order-detail-get`：按用户查询订单列表与详情。
 - `inventory-lock`：统一库存扣减/回滚逻辑，避免超卖。
 - `admin-content-manage`：运营端管理攻略与商品上下架。
 
