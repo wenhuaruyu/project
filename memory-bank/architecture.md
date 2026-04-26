@@ -31,6 +31,21 @@
 - 验收方式升级为“脚本化可重复检查”：流程 A/B/C、错误码口径、索引计划与发布前检查可以一键复跑。
 - 数据访问当前采用 `mock-db` 保持仓库自包含；后续替换为 CloudBase 时，函数签名与响应协议无需改动。
 
+## 当前阶段架构洞察（里程碑：环境绑定修正）
+- 小程序侧环境分层从“仅业务环境映射”补齐为“双映射”：`envVersion -> appEnv` 与 `appEnv -> cloudEnvId` 分层清晰。
+- 云函数侧环境识别从“后缀约束”升级为“显式 ID + 后缀兜底”并存，兼容历史命名与 CloudBase 默认环境 ID。
+- `dev` 实际绑定到 `cloudbase-d6g0oscry3022da21`，`prod` 仍保留独立映射，避免把生产流量误导入开发环境。
+
+## 当前阶段架构洞察（里程碑：免登录改造）
+- 入住助手链路调整为“免预订号/免手机号登录”模式：首页直接拉取门店信息，身份校验从强前置改为可选能力。
+- 客户登记提交放宽为非预订必填：`guest-profile-submit` 不再强依赖 `bookingId`，免登录场景以 `walkin` 占位归档。
+- 保持向后兼容：`auth-verify-booking` 仍支持预订号+手机号联合校验，用于后续需要实名准入的门店配置。
+
+## 当前阶段架构洞察（里程碑：登记字段收敛）
+- 登记表单收敛为最小必填集合：姓名、手机号、身份证号码、身份证正反面图片；移除到店时间、特殊需求字段。
+- 云函数 `guest-profile-submit` 入参同步收敛，后端写入改为 `id_no_encrypted`、`id_card_front_url`、`id_card_back_url`，减少非必要个人信息采集。
+- 前端登记页改为图片采集流程，降低用户输入复杂度并提升证件信息提交准确性。
+
 ## 文件作用说明
 - `memory-bank/prd.md`：产品目标、用户流程与 V1 范围边界的来源文档。
 - `memory-bank/tech-stack.md`：技术选型、部署方式与项目运行上下文说明。
@@ -84,9 +99,10 @@
 - `miniprogram/utils/`：通用工具能力（校验、格式化、请求辅助）。
 - `miniprogram/constants/`：业务常量与枚举定义。
 - `miniprogram/constants/env-profile.js`：小程序环境归并入口（`develop/trial/release` -> `dev/prod`）。
+- `miniprogram/constants/cloud-env.js`：小程序云环境 ID 映射入口（`appEnv` -> CloudBase `env`）。
 - `miniprogram/styles/`：全局与主题样式资源。
 - `cloudfunctions/`：云函数集合目录。
-- `cloudfunctions/common/env-profile.js`：云函数环境识别入口（CloudBase 环境 ID 后缀 -> `dev/prod`）。
+- `cloudfunctions/common/env-profile.js`：云函数环境识别入口（显式环境 ID 映射 + CloudBase 环境 ID 后缀 -> `dev/prod`）。
 - `cloudfunctions/common/error-codes.js`：云函数统一错误码基线与默认错误文案映射。
 - `cloudfunctions/common/response.js`：云函数统一响应构建器，固定输出 `code`、`message`、`data`、`requestId`。
 - `cloudfunctions/auth-verify-booking/`：预订身份校验入口。

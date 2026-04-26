@@ -7,6 +7,7 @@
 
 ## 2. 配置位置
 - 小程序端：`miniprogram/constants/env-profile.js`
+- 小程序云环境 ID 映射：`miniprogram/constants/cloud-env.js`
 - 云函数端：`cloudfunctions/common/env-profile.js`
 
 ## 3. 命名与映射规则
@@ -27,6 +28,7 @@
 | `-prod` | `prod` |
 
 示例：
+- `cloudbase-d6g0oscry3022da21` -> `dev`（显式映射）
 - `guihua-home-dev` -> `dev`
 - `guihua-home-prod` -> `prod`
 

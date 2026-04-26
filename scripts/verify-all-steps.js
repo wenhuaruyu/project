@@ -47,8 +47,8 @@ async function run() {
       name: "张三",
       phone: "13800138000",
       idNo: "330102199001011234",
-      arrivalTime: new Date().toISOString(),
-      specialNeeds: "靠窗房间"
+      idCardFrontImage: "cloud://test/id-front.jpg",
+      idCardBackImage: "cloud://test/id-back.jpg"
     },
     context
   )
@@ -58,6 +58,8 @@ async function run() {
   assert.ok(profileInDb)
   assert.notStrictEqual(profileInDb.phone_encrypted, "13800138000")
   assert.notStrictEqual(profileInDb.id_no_encrypted, "330102199001011234")
+  assert.strictEqual(profileInDb.id_card_front_url, "cloud://test/id-front.jpg")
+  assert.strictEqual(profileInDb.id_card_back_url, "cloud://test/id-back.jpg")
 
   const step9Ok = await guideQuery.main(
     { storeId: step5Ok.data.storeId, category: "spot", sortBy: "distance", pageNo: 1, pageSize: 10 },

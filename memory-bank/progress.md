@@ -1,5 +1,8 @@
 # 开发进度记录
 
+## 快速入口
+- MVP 方案文档：`mvp.md`
+
 ## 2026-04-26
 
 ### 已完成步骤
@@ -116,3 +119,24 @@
 - 当前数据层为 `cloudfunctions/common/mock-db.js` 的本地可复现实现，后续接入真实 CloudBase 时保持 API `camelCase` 与 DB `snake_case` 显式映射不变。
 - 支付终态规则不可破坏：前端支付结果仅提示，最终状态只能由 `payment-callback` 更新。
 - 发布前继续执行 `node scripts/release-precheck.js`，并在微信开发者工具完成真机路径复核后再提请 owner 发布。
+
+### 环境绑定修正（2026-04-27）
+- 小程序云环境映射更新：`miniprogram/constants/cloud-env.js` 中 `dev` 映射改为 `cloudbase-d6g0oscry3022da21`，`prod` 保持原映射不变。
+- 云函数环境识别兼容更新：`cloudfunctions/common/env-profile.js` 新增显式环境 ID 映射（`cloudbase-d6g0oscry3022da21 -> dev`），并保留 `-dev/-prod` 后缀规则。
+- 文档同步：`docs/env-layering.md` 已补充 `cloud-env.js` 配置位置与显式环境 ID 示例；`memory-bank/architecture.md` 已新增本次架构洞察。
+
+### 本次调整后验证建议
+- 微信开发者工具切换环境为 `cloudbase-d6g0oscry3022da21` 后执行“清缓存并编译”。
+- 调用 `auth-verify-booking` 验证初始化链路，确认无 `501000` 环境权限异常。
+
+### 登录口径调整（2026-04-27）
+- 需求变更：小程序不再要求“预订号 + 手机号登录”，入住助手改为免登录可进入。
+- `pages/home` 调整为默认加载 `store-info-get`，移除登录输入项。
+- `guest-profile-submit` 调整为 `bookingId` 非必填，免登录提交场景使用 `walkin` 记录。
+- 文档同步：`docs/api-spec.md`、`memory-bank/implementation-plan.md`、`mvp.md` 已更新为“身份校验可选，流程 A 免登录”。
+
+### 登记字段收敛（2026-04-27）
+- 需求变更：客人登记仅需姓名、手机号、身份证号码、身份证照片正反面，不再提交其他字段。
+- 前端调整：`pages/checkin` 移除证件号/到店时间/特殊需求输入，新增身份证正反面图片选择与预览。
+- 后端调整：`guest-profile-submit` 必填改为 `name/phone/idNo/idCardFrontImage/idCardBackImage`，写入字段改为 `id_no_encrypted/id_card_front_url/id_card_back_url`。
+- 文档同步：`docs/api-spec.md` 与 `docs/db-schema.md` 已更新对应字段定义。

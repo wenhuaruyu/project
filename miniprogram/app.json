@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/checkin/index",
+    "pages/guide-list/index",
+    "pages/guide-detail/index",
+    "pages/gift-list/index",
+    "pages/gift-detail/index",
+    "pages/order-confirm/index",
+    "pages/order-list/index",
+    "pages/profile/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "Guihua Home",
+    "navigationBarBackgroundColor": "#F8F3E8",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FFFFFF",
+    "backgroundTextStyle": "light"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

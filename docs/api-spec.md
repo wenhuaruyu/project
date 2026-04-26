@@ -57,14 +57,14 @@ wx.cloud.callFunction({
 
 ### 4.1.1 校验预订身份
 - 云函数：`auth-verify-booking`
-- 用途：校验用户是否为已预订客户并建立业务访问权限。
+- 用途：可选校验入口；V1 可直接免登录进入，若传入手机号/预订号可用于补充身份关联。
 
 请求参数：
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| bookingNo | string | 是 | 预订号 |
-| phone | string | 是 | 预订手机号 |
+| bookingNo | string | 否 | 预订号（可选） |
+| phone | string | 否 | 预订手机号（可选） |
 
 成功返回 `data`：
 
@@ -110,12 +110,12 @@ wx.cloud.callFunction({
 
 | 字段 | 类型 | 必填 | 说明 |
 |---|---|---|---|
-| bookingId | string | 是 | 预订记录 ID |
+| bookingId | string | 否 | 预订记录 ID（免登录场景可不传） |
 | name | string | 是 | 入住人姓名 |
 | phone | string | 是 | 手机号 |
-| idNo | string | 否 | 证件号（按配置） |
-| arrivalTime | string | 是 | 预计到店时间（ISO） |
-| specialNeeds | string | 否 | 特殊需求 |
+| idNo | string | 是 | 身份证号码 |
+| idCardFrontImage | string | 是 | 身份证人像面图片地址 |
+| idCardBackImage | string | 是 | 身份证国徽面图片地址 |
 
 成功返回 `data`：
 

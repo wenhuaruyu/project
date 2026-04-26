@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="card">
+    <view class="title">客户登记</view>
+    <view class="hint">仅需提交姓名、电话、身份证号码和身份证照片正反面。</view>
+
+    <input class="input" placeholder="姓名（必填）" value="{{name}}" bindinput="onChangeName" />
+    <input class="input" placeholder="手机号（必填）" type="number" maxlength="11" value="{{phone}}" bindinput="onChangePhone" />
+    <input class="input" placeholder="身份证号码（必填）" value="{{idNo}}" bindinput="onChangeIdNo" />
+
+    <view class="upload-block">
+      <view class="upload-title">身份证人像面（必填）</view>
+      <button class="upload-button" bindtap="onChooseIdCardFront">选择人像面照片</button>
+      <image wx:if="{{idCardFrontImage}}" class="preview" mode="aspectFill" src="{{idCardFrontImage}}" />
+    </view>
+
+    <view class="upload-block">
+      <view class="upload-title">身份证国徽面（必填）</view>
+      <button class="upload-button" bindtap="onChooseIdCardBack">选择国徽面照片</button>
+      <image wx:if="{{idCardBackImage}}" class="preview" mode="aspectFill" src="{{idCardBackImage}}" />
+    </view>
+
+    <button class="primary-button" loading="{{loading}}" bindtap="onSubmitProfile">提交登记</button>
+  </view>
+
+  <view wx:if="{{submitResult}}" class="card result-card">
+    <view class="title">提交成功</view>
+    <view class="row"><text class="label">profileId</text><text>{{submitResult.profileId}}</text></view>
+    <view class="row"><text class="label">submittedAt</text><text>{{submitResult.submittedAt}}</text></view>
+  </view>
+</view>

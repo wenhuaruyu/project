@@ -78,9 +78,9 @@
 | user_id | string | 是 | 对应用户 ID |
 | name | string | 是 | 入住人姓名 |
 | phone_encrypted | string | 是 | 加密手机号 |
-| id_no_encrypted | string | 否 | 加密证件号 |
-| arrival_time | datetime | 是 | 预计到店时间 |
-| special_needs | string | 否 | 特殊需求 |
+| id_no_encrypted | string | 是 | 加密身份证号码 |
+| id_card_front_url | string | 是 | 身份证人像面图片地址 |
+| id_card_back_url | string | 是 | 身份证国徽面图片地址 |
 | created_at | datetime | 是 | 提交时间 |
 
 索引建议：
