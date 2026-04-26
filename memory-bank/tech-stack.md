@@ -60,8 +60,8 @@ cd guihua-home
 
 ## 项目文档
 
-- 产品需求文档：`docs/PRD.md`
-- 系统架构文档：`docs/ARCHITECTURE.md`
+- 产品需求文档：`memory-bank/prd.md`
+- 系统架构文档：`docs/architecture.md`
 - 接口规范文档：`docs/api-spec.md`
 - 数据模型文档：`docs/db-schema.md`
 
