@@ -1,3 +1,29 @@
 <view class="container">
-  <view class="card">订单列表页面开发中</view>
+  <view class="card block">
+    <view class="title">我的订单</view>
+    <view class="filter-row">
+      <button size="mini" class="{{status === '' ? 'filter-active' : ''}}" data-status="" bindtap="setStatusFilter">全部</button>
+      <button size="mini" class="{{status === 'PENDING_PAY' ? 'filter-active' : ''}}" data-status="PENDING_PAY" bindtap="setStatusFilter">待支付</button>
+      <button size="mini" class="{{status === 'PAID' ? 'filter-active' : ''}}" data-status="PAID" bindtap="setStatusFilter">已支付</button>
+    </view>
+    <button class="primary-button" loading="{{loading}}" bindtap="loadList">刷新订单</button>
+    <button class="secondary-button" bindtap="goGiftList">继续逛伴手礼</button>
+  </view>
+
+  <block wx:for="{{list}}" wx:key="orderId">
+    <view class="card order-card" data-order-id="{{item.orderId}}" bindtap="goOrderDetail">
+      <view class="order-row"><text class="label">订单号</text><text>{{item.orderNo}}</text></view>
+      <view class="order-row"><text class="label">状态</text><text>{{item.orderStatusLabel}}</text></view>
+      <view class="order-row"><text class="label">支付</text><text>{{item.payStatusLabel}}</text></view>
+      <view class="order-row"><text class="label">金额</text><text>￥{{item.displayAmount}}</text></view>
+      <view class="order-row"><text class="label">时间</text><text>{{item.displayTime}}</text></view>
+      <view class="detail-tip">点击查看订单详情</view>
+    </view>
+  </block>
+
+  <view wx:if="{{!loading && list.length === 0}}" class="card empty-card">
+    <view class="empty-title">{{emptyText}}</view>
+    <view class="empty-subtitle">可前往伴手礼页继续选购</view>
+    <button class="secondary-button" bindtap="goGiftList">去逛伴手礼</button>
+  </view>
 </view>

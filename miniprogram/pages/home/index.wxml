@@ -7,6 +7,13 @@
     <view class="row"><text class="label">密码</text><text>{{storeInfo.wifiPasswordMasked}}</text></view>
     <view class="row"><text class="label">电话</text><text>{{storeInfo.contactPhone}}</text></view>
     <view class="row"><text class="label">须知</text><text>{{storeInfo.notice}}</text></view>
+    <view class="action-row">
+      <button class="secondary-button action-btn" bindtap="copyWifiPassword">复制 Wi-Fi 密码</button>
+      <button class="secondary-button action-btn" bindtap="callStore">一键拨号</button>
+      <button class="secondary-button action-btn" bindtap="openStoreLocation">导航到门店</button>
+    </view>
     <button class="primary-button" bindtap="goToCheckin">去填写登记信息</button>
+    <button class="secondary-button" bindtap="goToGiftList">去伴手礼列表</button>
+    <button class="secondary-button" bindtap="goToOrderList">查看我的订单</button>
   </view>
 </view>

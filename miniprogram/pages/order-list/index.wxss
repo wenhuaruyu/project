@@ -1,3 +1,64 @@
 .container {
   padding: 24rpx;
 }
+
+.block {
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.filter-row {
+  display: flex;
+  gap: 12rpx;
+  margin-bottom: 12rpx;
+}
+
+.filter-active {
+  background: #d9a441;
+  color: #2f2a26;
+}
+
+.secondary-button {
+  margin-top: 12rpx;
+  background: #efe6d4;
+  color: #2f2a26;
+}
+
+.order-card {
+  margin-bottom: 16rpx;
+}
+
+.detail-tip {
+  margin-top: 8rpx;
+  color: #7c9a6d;
+}
+
+.order-row {
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.label {
+  width: 110rpx;
+  color: #6b604f;
+}
+
+.empty-card {
+  text-align: center;
+}
+
+.empty-title {
+  color: #2f2a26;
+  font-size: 30rpx;
+}
+
+.empty-subtitle {
+  color: #7a6d5a;
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
+}

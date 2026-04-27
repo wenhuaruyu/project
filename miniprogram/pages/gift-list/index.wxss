@@ -1,3 +1,44 @@
 .container {
   padding: 24rpx;
 }
+
+.block {
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.secondary-button {
+  margin-top: 12rpx;
+  background: #efe6d4;
+  color: #2f2a26;
+}
+
+.product-card {
+  margin-bottom: 16rpx;
+}
+
+.product-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 8rpx;
+}
+
+.product-meta {
+  color: #6b604f;
+  margin-bottom: 6rpx;
+}
+
+.sold-out {
+  margin-top: 8rpx;
+  color: #b25555;
+}
+
+.go-buy {
+  margin-top: 8rpx;
+  color: #7c9a6d;
+}

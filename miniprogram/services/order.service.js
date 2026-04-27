@@ -8,6 +8,10 @@ function payOrder(orderId) {
   return callCloudFunction("order-pay", { orderId })
 }
 
+function confirmPayment(orderId) {
+  return callCloudFunction("payment-callback", { orderId, paySuccess: true })
+}
+
 function queryOrderList(data) {
   return callCloudFunction("order-list-query", data)
 }
@@ -19,6 +23,7 @@ function getOrderDetail(orderId, userId) {
 module.exports = {
   createOrder,
   payOrder,
+  confirmPayment,
   queryOrderList,
   getOrderDetail
 }

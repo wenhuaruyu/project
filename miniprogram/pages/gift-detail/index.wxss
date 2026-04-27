@@ -1,3 +1,36 @@
 .container {
   padding: 24rpx;
 }
+
+.title {
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-bottom: 14rpx;
+}
+
+.meta {
+  color: #6b604f;
+  margin-bottom: 8rpx;
+}
+
+.desc {
+  margin: 12rpx 0 18rpx;
+  color: #2f2a26;
+}
+
+.quantity-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 18rpx;
+}
+
+.quantity-text {
+  margin: 0 18rpx;
+  min-width: 40rpx;
+  text-align: center;
+}
+
+.sold-out {
+  margin-bottom: 12rpx;
+  color: #b25555;
+}

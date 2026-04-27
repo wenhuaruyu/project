@@ -33,3 +33,24 @@
   width: 120rpx;
   color: #7a6d5a;
 }
+
+.secondary-button {
+  margin-top: 10rpx;
+  background: #efe6d4;
+  color: #2f2a26;
+}
+
+.action-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 8rpx;
+  margin-bottom: 8rpx;
+}
+
+.action-btn {
+  width: 32%;
+  margin-top: 0;
+  font-size: 24rpx;
+  padding: 0;
+}

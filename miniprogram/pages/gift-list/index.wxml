@@ -1,3 +1,20 @@
 <view class="container">
-  <view class="card">伴手礼列表页面开发中</view>
+  <view class="card block">
+    <view class="title">伴手礼</view>
+    <button class="primary-button" loading="{{loading}}" bindtap="loadList">刷新列表</button>
+    <button class="secondary-button" bindtap="goOrderList">查看我的订单</button>
+  </view>
+
+  <block wx:for="{{list}}" wx:key="productId">
+    <view class="card product-card" data-product-id="{{item.productId}}" data-sold-out="{{item.soldOut}}" bindtap="goDetail">
+      <view class="product-title">{{item.name}}</view>
+      <view class="product-meta">分类：{{item.category}}</view>
+      <view class="product-meta">价格：￥{{item.displayPrice}}</view>
+      <view class="product-meta">库存：{{item.stock}}</view>
+      <view wx:if="{{item.soldOut}}" class="sold-out">已售罄</view>
+      <view wx:else class="go-buy">点击查看详情</view>
+    </view>
+  </block>
+
+  <view wx:if="{{!loading && list.length === 0}}" class="card">暂无商品</view>
 </view>

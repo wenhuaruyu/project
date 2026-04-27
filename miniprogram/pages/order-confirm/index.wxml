@@ -1,3 +1,18 @@
 <view class="container">
-  <view class="card">订单确认页面开发中</view>
+  <view wx:if="{{product}}" class="card block">
+    <view class="title">确认订单</view>
+    <view class="meta">商品：{{product.name}}</view>
+    <view class="meta">单价：￥{{displayUnitPrice}}</view>
+    <view class="meta">数量：{{quantity}}</view>
+    <view class="amount">合计：￥{{displayAmountTotal}}</view>
+    <button class="primary-button" loading="{{loading}}" disabled="{{loading || orderId}}" bindtap="onCreateOrder">创建订单</button>
+  </view>
+
+  <view class="card block">
+    <view class="title">支付</view>
+    <view class="meta">订单ID：{{orderId || '未创建'}}</view>
+    <view wx:if="{{paid}}" class="paid-tag">已完成支付</view>
+    <button class="primary-button" loading="{{loading}}" disabled="{{loading || !orderId || paid}}" bindtap="onStartPay">发起支付（演示）</button>
+    <button class="secondary-button" bindtap="goOrderList">查看我的订单</button>
+  </view>
 </view>

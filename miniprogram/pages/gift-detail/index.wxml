@@ -1,3 +1,19 @@
 <view class="container">
-  <view class="card">伴手礼详情页面开发中</view>
+  <view wx:if="{{detail}}" class="card">
+    <view class="title">{{detail.name}}</view>
+    <view class="meta">价格：￥{{displayPrice}}</view>
+    <view class="meta">库存：{{detail.stock}}</view>
+    <view class="desc">{{detail.desc}}</view>
+
+    <view class="quantity-row">
+      <button size="mini" bindtap="onMinus">-</button>
+      <text class="quantity-text">{{quantity}}</text>
+      <button size="mini" bindtap="onPlus">+</button>
+    </view>
+
+    <view wx:if="{{detail.stock <= 0}}" class="sold-out">该商品已售罄</view>
+    <button class="primary-button" disabled="{{detail.stock <= 0}}" bindtap="goOrderConfirm">去下单</button>
+  </view>
+
+  <view wx:if="{{!loading && !detail}}" class="card">商品不存在</view>
 </view>

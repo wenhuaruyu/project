@@ -1,3 +1,64 @@
 .container {
   padding: 24rpx;
 }
+
+.block {
+  margin-top: 18rpx;
+}
+
+.user-card {
+  background: linear-gradient(135deg, #f8f3e8, #fff7e6);
+}
+
+.nickname {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #2f2a26;
+}
+
+.user-id {
+  margin-top: 8rpx;
+  color: #6f6556;
+}
+
+.hint {
+  margin-top: 8rpx;
+  color: #7c9a6d;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.quick-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.quick-btn {
+  width: 48%;
+  margin: 0 0 12rpx;
+  background: #ffffff;
+  color: #2f2a26;
+  border: 1rpx solid #eadfcf;
+  border-radius: 12rpx;
+}
+
+.row {
+  display: flex;
+  margin-bottom: 8rpx;
+}
+
+.label {
+  width: 120rpx;
+  color: #6b604f;
+}
+
+.secondary-button {
+  margin-top: 8rpx;
+  background: #efe6d4;
+  color: #2f2a26;
+}

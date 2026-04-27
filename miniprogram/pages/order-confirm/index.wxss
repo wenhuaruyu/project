@@ -1,3 +1,36 @@
 .container {
   padding: 24rpx;
 }
+
+.block {
+  margin-bottom: 20rpx;
+}
+
+.title {
+  font-size: 32rpx;
+  font-weight: 600;
+  margin-bottom: 12rpx;
+}
+
+.meta {
+  color: #6b604f;
+  margin-bottom: 8rpx;
+}
+
+.amount {
+  margin: 10rpx 0 16rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #2f2a26;
+}
+
+.secondary-button {
+  margin-top: 12rpx;
+  background: #efe6d4;
+  color: #2f2a26;
+}
+
+.paid-tag {
+  margin-bottom: 10rpx;
+  color: #2f8f60;
+}

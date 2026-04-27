@@ -33,6 +33,52 @@ Page({
     })
   },
 
+  goToGiftList() {
+    wx.navigateTo({
+      url: "/pages/gift-list/index?storeId=" + this.data.storeId
+    })
+  },
+
+  goToOrderList() {
+    wx.switchTab({
+      url: "/pages/order-list/index"
+    })
+  },
+
+  copyWifiPassword() {
+    const wifiPassword =
+      this.data.storeInfo &&
+      (this.data.storeInfo.wifiPassword || this.data.storeInfo.wifiPasswordMasked)
+    if (!wifiPassword) {
+      wx.showToast({ title: "暂无 Wi-Fi 密码", icon: "none" })
+      return
+    }
+    wx.setClipboardData({ data: wifiPassword })
+  },
+
+  callStore() {
+    const phone = this.data.storeInfo && this.data.storeInfo.contactPhone
+    if (!phone) {
+      wx.showToast({ title: "暂无联系电话", icon: "none" })
+      return
+    }
+    wx.makePhoneCall({ phoneNumber: phone })
+  },
+
+  openStoreLocation() {
+    const info = this.data.storeInfo || {}
+    if (typeof info.lat !== "number" || typeof info.lng !== "number") {
+      wx.showToast({ title: "暂无定位信息", icon: "none" })
+      return
+    }
+    wx.openLocation({
+      latitude: info.lat,
+      longitude: info.lng,
+      name: info.name || "门店位置",
+      address: info.address || ""
+    })
+  },
+
   showRequestError(error, fallbackTitle) {
     const codeText = error && error.code ? `(${error.code})` : ""
     const message = error && error.message ? error.message : fallbackTitle

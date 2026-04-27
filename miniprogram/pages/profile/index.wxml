@@ -1,3 +1,26 @@
 <view class="container">
-  <view class="card">我的页面开发中</view>
+  <view class="card user-card">
+    <view class="nickname">{{userInfo.nickname}}</view>
+    <view class="user-id">用户标识：{{userInfo.userId}}</view>
+    <view class="hint">{{userInfo.contactHint}}</view>
+  </view>
+
+  <view class="card block">
+    <view class="section-title">常用入口</view>
+    <view class="quick-grid">
+      <button class="quick-btn" bindtap="goCheckin">登记信息</button>
+      <button class="quick-btn" bindtap="goGiftList">伴手礼</button>
+      <button class="quick-btn" bindtap="goOrderList">我的订单</button>
+      <button class="quick-btn" bindtap="callStore">联系前台</button>
+    </view>
+  </view>
+
+  <view class="card block" wx:if="{{storeInfo}}">
+    <view class="section-title">门店信息</view>
+    <view class="row"><text class="label">门店</text><text>{{storeInfo.name}}</text></view>
+    <view class="row"><text class="label">电话</text><text>{{storeInfo.contactPhone}}</text></view>
+    <view class="row"><text class="label">Wi-Fi</text><text>{{storeInfo.wifiName}}</text></view>
+    <view class="row"><text class="label">密码</text><text>{{storeInfo.wifiPasswordMasked}}</text></view>
+    <button class="secondary-button" bindtap="copyWifiPassword">复制 Wi-Fi 密码</button>
+  </view>
 </view>
