@@ -10,13 +10,13 @@
     <view class="upload-block">
       <view class="upload-title">身份证人像面（必填）</view>
       <button class="upload-button" bindtap="onChooseIdCardFront">选择人像面照片</button>
-      <image wx:if="{{idCardFrontImage}}" class="preview" mode="aspectFill" src="{{idCardFrontImage}}" />
+      <image wx:if="{{idCardFrontPreview}}" class="preview" mode="aspectFill" src="{{idCardFrontPreview}}" />
     </view>
 
     <view class="upload-block">
       <view class="upload-title">身份证国徽面（必填）</view>
       <button class="upload-button" bindtap="onChooseIdCardBack">选择国徽面照片</button>
-      <image wx:if="{{idCardBackImage}}" class="preview" mode="aspectFill" src="{{idCardBackImage}}" />
+      <image wx:if="{{idCardBackPreview}}" class="preview" mode="aspectFill" src="{{idCardBackPreview}}" />
     </view>
 
     <button class="primary-button" loading="{{loading}}" bindtap="onSubmitProfile">提交登记</button>

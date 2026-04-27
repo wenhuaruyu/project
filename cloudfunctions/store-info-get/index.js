@@ -1,28 +1,44 @@
-const { success, failureByCode } = require("../common/response")
-const { ERROR_CODES } = require("../common/error-codes")
-const { findOne } = require("../common/mock-db")
-const { toStoreInfoData } = require("../common/mappers")
+function resolveRequestId(context) {
+  return (context && context.requestId) || `req_${Date.now()}`
+}
+
+function success(data, context) {
+  return {
+    code: 0,
+    message: "ok",
+    data: data || {},
+    requestId: resolveRequestId(context)
+  }
+}
+
+function fail(code, message, data, context) {
+  return {
+    code,
+    message,
+    data: data || {},
+    requestId: resolveRequestId(context)
+  }
+}
+
+const STORE = {
+  storeId: "store_001",
+  name: "桂花小院",
+  address: "杭州市西湖区文三路 18 号",
+  lat: 30.2741,
+  lng: 120.1551,
+  wifiName: "GuihuaHome",
+  wifiPasswordMasked: "********88",
+  contactPhone: "0571-88886666",
+  notice: "入住请携带有效证件，22:00 后保持安静。"
+}
 
 exports.main = async (event, context) => {
   const payload = event || {}
   if (!payload.storeId) {
-    return failureByCode({
-      code: ERROR_CODES.PARAM_ERROR,
-      data: { missingFields: ["storeId"] },
-      requestRef: context
-    })
+    return fail(40001, "参数错误", { missingFields: ["storeId"] }, context)
   }
-
-  const store = findOne(
-    "stores",
-    (row) => row._id === payload.storeId && row.status === "active"
-  )
-  if (!store) {
-    return failureByCode({
-      code: ERROR_CODES.NOT_FOUND,
-      requestRef: context
-    })
+  if (payload.storeId !== STORE.storeId) {
+    return fail(40401, "数据不存在", {}, context)
   }
-
-  return success(toStoreInfoData(store), context)
+  return success(STORE, context)
 }

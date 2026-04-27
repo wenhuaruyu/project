@@ -5,7 +5,8 @@ App({
   globalData: {
     appEnv: "dev",
     cloudEnvId: "",
-    cloudReady: false
+    cloudReady: false,
+    forceLocalMock: false
   },
 
   onLaunch() {
@@ -19,6 +20,7 @@ App({
     const cloudEnvId = resolveCloudEnvId(appEnv)
     this.globalData.appEnv = appEnv
     this.globalData.cloudEnvId = cloudEnvId
+    this.globalData.forceLocalMock = appEnv === "dev"
 
     if (!wx.cloud) {
       throw new Error("wx.cloud is not available. Please use a supported base library.")

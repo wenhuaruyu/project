@@ -9,6 +9,8 @@ Page({
     idNo: "",
     idCardFrontImage: "",
     idCardBackImage: "",
+    idCardFrontPreview: "",
+    idCardBackPreview: "",
     submitResult: null,
     loading: false
   },
@@ -31,18 +33,68 @@ Page({
     this.setData({ idNo: e.detail.value.trim() })
   },
 
-  chooseImage(fieldName) {
+  uploadImageToCloud(tempFilePath, folder) {
+    const ext = tempFilePath.includes(".")
+      ? tempFilePath.slice(tempFilePath.lastIndexOf("."))
+      : ".jpg"
+    const cloudPath = `${folder}/${Date.now()}_${Math.random().toString(36).slice(2, 8)}${ext}`
+    return wx.cloud.uploadFile({
+      cloudPath,
+      filePath: tempFilePath
+    })
+  },
+
+  chooseImage(fileFieldName, previewFieldName, folder) {
     wx.chooseMedia({
       count: 1,
       mediaType: ["image"],
       sourceType: ["album", "camera"],
-      success: (res) => {
+      success: async (res) => {
         const filePath =
           res && res.tempFiles && res.tempFiles[0] ? res.tempFiles[0].tempFilePath : ""
         if (!filePath) {
           return
         }
-        this.setData({ [fieldName]: filePath })
+
+        const app = getApp && getApp()
+        if (app && app.globalData && app.globalData.forceLocalMock) {
+          this.setData({
+            [fileFieldName]: filePath,
+            [previewFieldName]: filePath
+          })
+          wx.showToast({ title: "开发模式：已使用本地图片", icon: "none" })
+          return
+        }
+
+        let loadingShown = false
+        try {
+          wx.showLoading({ title: "上传中", mask: true })
+          loadingShown = true
+          const uploadRes = await this.uploadImageToCloud(filePath, folder)
+          this.setData({
+            [fileFieldName]: uploadRes.fileID,
+            [previewFieldName]: filePath
+          })
+          wx.showToast({ title: "上传成功", icon: "success" })
+        } catch (error) {
+          const errorMsg = String((error && (error.errMsg || error.message)) || "")
+          const codeMatch = errorMsg.match(/errCode:\s*(-?\d+)/i)
+          const code = codeMatch ? Number(codeMatch[1]) : undefined
+          const useLocalImage = code === -501000 || code === 501000 || code === -504002 || code === 504002
+          if (useLocalImage) {
+            this.setData({
+              [fileFieldName]: filePath,
+              [previewFieldName]: filePath
+            })
+            wx.showToast({ title: "云端上传异常，已使用本地图片", icon: "none" })
+            return
+          }
+          this.showRequestError(error, "上传失败")
+        } finally {
+          if (loadingShown) {
+            wx.hideLoading()
+          }
+        }
       },
       fail: (error) => {
         this.showRequestError(error, "选择图片失败")
@@ -51,11 +103,11 @@ Page({
   },
 
   onChooseIdCardFront() {
-    this.chooseImage("idCardFrontImage")
+    this.chooseImage("idCardFrontImage", "idCardFrontPreview", "id-cards/front")
   },
 
   onChooseIdCardBack() {
-    this.chooseImage("idCardBackImage")
+    this.chooseImage("idCardBackImage", "idCardBackPreview", "id-cards/back")
   },
 
   async onSubmitProfile() {

@@ -1,11 +1,4 @@
 <view class="container">
-  <view class="card block">
-    <view class="title">入住信息</view>
-    <view class="hint">无需预订号和手机号登录，已为你加载当前门店信息。</view>
-    <button class="primary-button" loading="{{loading}}" bindtap="loadStoreInfo">刷新门店信息</button>
-    <button class="primary-button" bindtap="goToCheckin">直接去登记页</button>
-  </view>
-
   <view wx:if="{{storeInfo}}" class="card block">
     <view class="title">门店详情</view>
     <view class="row"><text class="label">门店</text><text>{{storeInfo.name}}</text></view>

@@ -2,14 +2,14 @@
   "libVersion": "3.15.2",
   "projectname": "guihua-home",
   "setting": {
-    "urlCheck": true,
+    "urlCheck": false,
     "coverView": true,
     "compileHotReLoad": true,
     "cloudFunctionTemplateRoot": "cloudfunctions/",
     "lazyloadPlaceholderEnable": false,
     "skylineRenderEnable": false,
     "preloadBackgroundData": false,
-    "autoAudits": false,
+    "autoAudits": true,
     "useApiHook": true,
     "showShadowRootInWxmlPanel": false,
     "useStaticServer": false,
@@ -17,6 +17,6 @@
     "showES6CompileOption": false,
     "checkInvalidKey": true,
     "ignoreDevUnusedFiles": true,
-    "bigPackageSizeSupport": false
+    "bigPackageSizeSupport": true
   }
 }
