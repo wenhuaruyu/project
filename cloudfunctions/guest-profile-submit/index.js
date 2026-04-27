@@ -1,26 +1,7 @@
-const crypto = require("crypto")
-
-function resolveRequestId(context) {
-  return (context && context.requestId) || `req_${Date.now()}`
-}
-
-function success(data, context) {
-  return {
-    code: 0,
-    message: "ok",
-    data: data || {},
-    requestId: resolveRequestId(context)
-  }
-}
-
-function fail(code, message, data, context) {
-  return {
-    code,
-    message,
-    data: data || {},
-    requestId: resolveRequestId(context)
-  }
-}
+const { success, failureByCode } = require("../common/response")
+const { ERROR_CODES } = require("../common/error-codes")
+const { insert } = require("../common/mock-db")
+const { encryptText, hashPhone, maskPhone } = require("../common/crypto-utils")
 
 function isIdNo(idNo) {
   const source = String(idNo || "").toUpperCase()
@@ -36,35 +17,55 @@ function isIdNo(idNo) {
   return checkMap[sum % 11] === source[17]
 }
 
-function encryptText(raw) {
-  const key = crypto.createHash("sha256").update("guihua-home-dev-key").digest()
-  const iv = Buffer.alloc(16, 0)
-  const cipher = crypto.createCipheriv("aes-256-cbc", key, iv)
-  return Buffer.concat([cipher.update(String(raw), "utf8"), cipher.final()]).toString("base64")
-}
-
 exports.main = async (event, context) => {
   const payload = event || {}
   const required = ["name", "phone", "idNo", "idCardFrontImage", "idCardBackImage"]
   const missingFields = required.filter((field) => !payload[field])
   if (missingFields.length > 0) {
-    return fail(40001, "参数错误", { missingFields }, context)
+    return failureByCode({
+      code: ERROR_CODES.PARAM_ERROR,
+      data: { missingFields },
+      requestRef: context
+    })
   }
+
   if (!/^1\d{10}$/.test(String(payload.phone))) {
-    return fail(40001, "手机号格式不正确", { invalidField: "phone" }, context)
+    return failureByCode({
+      code: ERROR_CODES.PARAM_ERROR,
+      message: "手机号格式不正确",
+      data: { invalidField: "phone" },
+      requestRef: context
+    })
   }
+
   if (!isIdNo(payload.idNo)) {
-    return fail(40001, "身份证号码格式不正确", { invalidField: "idNo" }, context)
+    return failureByCode({
+      code: ERROR_CODES.PARAM_ERROR,
+      message: "身份证号码格式不正确",
+      data: { invalidField: "idNo" },
+      requestRef: context
+    })
   }
+
+  const profileDoc = insert("guest_profiles", {
+    booking_id: payload.bookingId || "walkin",
+    user_id: payload.userId || "guest_local",
+    name: String(payload.name),
+    phone_encrypted: encryptText(String(payload.phone)),
+    phone_hash: hashPhone(String(payload.phone)),
+    phone_masked: maskPhone(String(payload.phone)),
+    id_no_encrypted: encryptText(String(payload.idNo).toUpperCase()),
+    id_card_front_url: String(payload.idCardFrontImage),
+    id_card_back_url: String(payload.idCardBackImage),
+    status: "submitted",
+    submitted_at: new Date().toISOString(),
+    updated_at: new Date().toISOString()
+  })
 
   return success(
     {
-      profileId: `guest_profile_${Date.now()}`,
-      submittedAt: new Date().toISOString(),
-      preview: {
-        phoneEncrypted: encryptText(payload.phone),
-        idNoEncrypted: encryptText(payload.idNo)
-      }
+      profileId: profileDoc._id,
+      submittedAt: profileDoc.submitted_at
     },
     context
   )

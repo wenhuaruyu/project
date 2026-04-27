@@ -1,4 +1,4 @@
-const { getOrderDetail } = require("../../services/order.service")
+const { getOrderDetail, payOrder, confirmPayment } = require("../../services/order.service")
 
 const ORDER_STATUS_LABEL = {
   PENDING_PAY: "待支付",
@@ -12,6 +12,20 @@ const PAY_STATUS_LABEL = {
   UNPAID: "未支付",
   PAID: "已支付",
   REFUNDED: "已退款"
+}
+
+const ORDER_STATUS_CLASS = {
+  PENDING_PAY: "status-warn",
+  PAID: "status-success",
+  PREPARING: "status-info",
+  COMPLETED: "status-done",
+  CANCELLED: "status-muted"
+}
+
+const PAY_STATUS_CLASS = {
+  UNPAID: "status-warn",
+  PAID: "status-success",
+  REFUNDED: "status-muted"
 }
 
 function formatCurrency(cents) {
@@ -69,6 +83,7 @@ Page({
     userId: "guest_local",
     detail: null,
     timeline: [],
+    paying: false,
     loading: false
   },
 
@@ -96,7 +111,9 @@ Page({
           displayPrice: formatCurrency(item.price)
         })),
         orderStatusLabel: ORDER_STATUS_LABEL[res.data.orderStatus] || res.data.orderStatus || "未知状态",
+        orderStatusClass: ORDER_STATUS_CLASS[res.data.orderStatus] || "status-info",
         payStatusLabel: PAY_STATUS_LABEL[res.data.payStatus] || res.data.payStatus || "未知状态",
+        payStatusClass: PAY_STATUS_CLASS[res.data.payStatus] || "status-info",
         displayAmount: formatCurrency(res.data.amountTotal),
         displayCreatedAt: formatTime(res.data.createdAt),
         displayPaidAt: formatTime(res.data.paidAt)
@@ -109,6 +126,29 @@ Page({
       wx.showToast({ title: error.message || "加载失败", icon: "none" })
     } finally {
       this.setData({ loading: false })
+    }
+  },
+
+  onPullDownRefresh() {
+    this.loadDetail().finally(() => {
+      wx.stopPullDownRefresh()
+    })
+  },
+
+  async onRepay() {
+    if (!this.data.orderId) {
+      return
+    }
+    this.setData({ paying: true })
+    try {
+      await payOrder(this.data.orderId)
+      await confirmPayment(this.data.orderId)
+      wx.showToast({ title: "支付成功", icon: "success" })
+      await this.loadDetail()
+    } catch (error) {
+      wx.showToast({ title: error.message || "支付失败", icon: "none" })
+    } finally {
+      this.setData({ paying: false })
     }
   }
 })

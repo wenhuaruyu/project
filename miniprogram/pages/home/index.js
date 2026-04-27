@@ -39,6 +39,12 @@ Page({
     })
   },
 
+  goToGuideList() {
+    wx.switchTab({
+      url: "/pages/guide-list/index"
+    })
+  },
+
   goToOrderList() {
     wx.switchTab({
       url: "/pages/order-list/index"

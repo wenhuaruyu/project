@@ -1,3 +1,56 @@
 <view class="container">
-  <view class="card">攻略列表页面开发中</view>
+  <view class="card block">
+    <view class="title">旅游攻略</view>
+    <view class="search-row">
+      <input class="search-input" placeholder="搜索景点/美食/路线" value="{{keyword}}" bindinput="onKeywordInput" confirm-type="search" bindconfirm="onKeywordSearch" />
+      <button size="mini" class="search-btn" bindtap="onKeywordSearch">搜索</button>
+      <button size="mini" class="search-btn" bindtap="clearKeyword">清空</button>
+    </view>
+
+    <view class="group-title">分类</view>
+    <view class="filter-row">
+      <block wx:for="{{categoryOptions}}" wx:key="value">
+        <button
+          size="mini"
+          class="{{category === item.value ? 'filter-active' : ''}}"
+          data-category="{{item.value}}"
+          bindtap="onCategoryChange"
+        >
+          {{item.label}}
+        </button>
+      </block>
+    </view>
+
+    <view class="group-title">排序</view>
+    <view class="filter-row">
+      <block wx:for="{{sortOptions}}" wx:key="value">
+        <button
+          size="mini"
+          class="{{sortBy === item.value ? 'filter-active' : ''}}"
+          data-sort="{{item.value}}"
+          bindtap="onSortChange"
+        >
+          {{item.label}}
+        </button>
+      </block>
+    </view>
+  </view>
+
+  <block wx:for="{{filteredList}}" wx:key="guideId">
+    <view class="card guide-card" data-guide-id="{{item.guideId}}" bindtap="onGoDetail">
+      <view class="guide-title">{{item.title}}</view>
+      <view class="tag-row">
+        <text class="tag category-tag">{{item.categoryLabel}}</text>
+        <text class="tag distance-tag">距门店 {{item.displayDistance}} km</text>
+        <text class="tag {{item.heatClass}}">{{item.heatText}} {{item.popularityText}}</text>
+      </view>
+      <view class="guide-meta">建议时长：{{item.durationText}}</view>
+      <view class="guide-tip">点击查看详情并导航</view>
+    </view>
+  </block>
+
+  <view wx:if="{{!loading && filteredList.length === 0}}" class="card empty-card">
+    <view>暂无匹配攻略</view>
+    <button class="secondary-button" bindtap="goHome">返回首页</button>
+  </view>
 </view>

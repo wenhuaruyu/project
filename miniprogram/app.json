@@ -29,6 +29,10 @@
         "text": "首页"
       },
       {
+        "pagePath": "pages/guide-list/index",
+        "text": "攻略"
+      },
+      {
         "pagePath": "pages/gift-list/index",
         "text": "伴手礼"
       },

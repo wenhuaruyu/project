@@ -2,11 +2,20 @@
   <view wx:if="{{detail}}" class="card block">
     <view class="title">订单详情</view>
     <view class="row"><text class="label">订单号</text><text>{{detail.orderNo}}</text></view>
-    <view class="row"><text class="label">业务状态</text><text>{{detail.orderStatusLabel}}</text></view>
-    <view class="row"><text class="label">支付状态</text><text>{{detail.payStatusLabel}}</text></view>
+    <view class="row"><text class="label">业务状态</text><text class="status-tag {{detail.orderStatusClass}}">{{detail.orderStatusLabel}}</text></view>
+    <view class="row"><text class="label">支付状态</text><text class="status-tag {{detail.payStatusClass}}">{{detail.payStatusLabel}}</text></view>
     <view class="row"><text class="label">订单金额</text><text>￥{{detail.displayAmount}}</text></view>
     <view class="row"><text class="label">创建时间</text><text>{{detail.displayCreatedAt}}</text></view>
     <view class="row" wx:if="{{detail.displayPaidAt}}"><text class="label">支付时间</text><text>{{detail.displayPaidAt}}</text></view>
+    <button
+      wx:if="{{detail.orderStatus === 'PENDING_PAY'}}"
+      class="pay-btn"
+      loading="{{paying}}"
+      disabled="{{paying}}"
+      bindtap="onRepay"
+    >
+      去支付
+    </button>
   </view>
 
   <view wx:if="{{timeline.length > 0}}" class="card block">

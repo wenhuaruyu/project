@@ -3,6 +3,100 @@ function createRequestId() {
 }
 
 const mockState = {
+  guides: [
+    {
+      guideId: "guide_001",
+      storeId: "store_001",
+      title: "西湖苏堤慢游路线",
+      category: "spot",
+      coverUrl: "",
+      distanceKm: 3.2,
+      durationText: "建议 2-3 小时",
+      traffic: {
+        walk: "步行约 45 分钟",
+        taxi: "打车约 15 分钟",
+        bus: "可乘坐 52 路至苏堤站"
+      },
+      content: "从曲院风荷进入，沿苏堤步行至花港观鱼，傍晚可看西湖落日。",
+      tips: "节假日人流较大，建议避开 10:00-15:00 高峰。",
+      address: "杭州市西湖区苏堤",
+      lat: 30.2497,
+      lng: 120.1376,
+      popularity: 95,
+      status: "online",
+      sort: 10,
+      updatedAt: "2026-04-25T09:30:00Z"
+    },
+    {
+      guideId: "guide_002",
+      storeId: "store_001",
+      title: "河坊街本地小吃清单",
+      category: "food",
+      coverUrl: "",
+      distanceKm: 4.8,
+      durationText: "建议 1.5-2 小时",
+      traffic: {
+        walk: "步行约 60 分钟",
+        taxi: "打车约 18 分钟",
+        bus: "可乘坐 7 路至吴山广场"
+      },
+      content: "推荐定胜糕、葱包桧和藕粉，沿街老字号集中，适合边走边吃。",
+      tips: "夜间 19:00 后更热闹，注意保管随身物品。",
+      address: "杭州市上城区河坊街",
+      lat: 30.243,
+      lng: 120.1712,
+      popularity: 88,
+      status: "online",
+      sort: 20,
+      updatedAt: "2026-04-24T11:10:00Z"
+    },
+    {
+      guideId: "guide_003",
+      storeId: "store_001",
+      title: "宝石山日落拍照点",
+      category: "photo",
+      coverUrl: "",
+      distanceKm: 2.6,
+      durationText: "建议 1 小时",
+      traffic: {
+        walk: "步行约 35 分钟",
+        taxi: "打车约 12 分钟",
+        bus: "可乘坐 28 路至葛岭站"
+      },
+      content: "登高后可俯瞰西湖与城市天际线，适合傍晚黄金时段拍摄。",
+      tips: "建议穿防滑鞋，雨天注意台阶湿滑。",
+      address: "杭州市西湖区宝石山",
+      lat: 30.2619,
+      lng: 120.1506,
+      popularity: 91,
+      status: "online",
+      sort: 30,
+      updatedAt: "2026-04-23T16:20:00Z"
+    },
+    {
+      guideId: "guide_004",
+      storeId: "store_001",
+      title: "武林夜游与夜景路线",
+      category: "night",
+      coverUrl: "",
+      distanceKm: 5.1,
+      durationText: "建议 2 小时",
+      traffic: {
+        walk: "步行约 70 分钟",
+        taxi: "打车约 20 分钟",
+        bus: "可乘坐 188 路至武林广场"
+      },
+      content: "从武林广场音乐喷泉出发，串联湖滨商圈，适合夜间轻松散步。",
+      tips: "周末车流较多，建议优先地铁或公交。",
+      address: "杭州市拱墅区武林广场",
+      lat: 30.2767,
+      lng: 120.1568,
+      popularity: 84,
+      status: "online",
+      sort: 40,
+      updatedAt: "2026-04-22T18:00:00Z"
+    }
+  ],
   products: [
     {
       productId: "product_001",
@@ -133,6 +227,46 @@ function executeLocalMock(name, data) {
       pageNo,
       pageSize
     })
+  }
+
+  if (name === "guide-query") {
+    if (!payload.storeId) {
+      return fail(40001, "参数错误", { missingFields: ["storeId"] })
+    }
+    const pageNo = Number(payload.pageNo || 1)
+    const pageSize = Number(payload.pageSize || 10)
+    let guides = mockState.guides.filter(
+      (item) => item.storeId === payload.storeId && item.status === "online"
+    )
+    if (payload.category) {
+      guides = guides.filter((item) => item.category === payload.category)
+    }
+    if (payload.sortBy === "distance") {
+      guides = guides.sort((a, b) => Number(a.distanceKm || 0) - Number(b.distanceKm || 0))
+    } else if (payload.sortBy === "popular") {
+      guides = guides.sort((a, b) => Number(b.popularity || 0) - Number(a.popularity || 0))
+    } else {
+      guides = guides.sort((a, b) => Number(a.sort || 0) - Number(b.sort || 0))
+    }
+    const total = guides.length
+    const offset = (pageNo - 1) * pageSize
+    return success({
+      list: guides.slice(offset, offset + pageSize),
+      total,
+      pageNo,
+      pageSize
+    })
+  }
+
+  if (name === "guide-detail-get") {
+    if (!payload.guideId) {
+      return fail(40001, "参数错误", { missingFields: ["guideId"] })
+    }
+    const guide = mockState.guides.find((item) => item.guideId === payload.guideId)
+    if (!guide || guide.status !== "online") {
+      return fail(40401, "数据不存在", {})
+    }
+    return success(guide)
   }
 
   if (name === "product-detail-get") {
@@ -270,6 +404,8 @@ function canHandleLocalMock(name) {
     name === "auth-verify-booking" ||
     name === "store-info-get" ||
     name === "guest-profile-submit" ||
+    name === "guide-query" ||
+    name === "guide-detail-get" ||
     name === "product-query" ||
     name === "product-detail-get" ||
     name === "order-create" ||

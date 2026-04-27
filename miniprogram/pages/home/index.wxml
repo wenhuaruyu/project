@@ -13,6 +13,7 @@
       <button class="secondary-button action-btn" bindtap="openStoreLocation">导航到门店</button>
     </view>
     <button class="primary-button" bindtap="goToCheckin">去填写登记信息</button>
+    <button class="secondary-button" bindtap="goToGuideList">去旅游攻略</button>
     <button class="secondary-button" bindtap="goToGiftList">去伴手礼列表</button>
     <button class="secondary-button" bindtap="goToOrderList">查看我的订单</button>
   </view>

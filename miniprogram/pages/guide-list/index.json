@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "旅游攻略"
+  "navigationBarTitleText": "旅游攻略",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F8F3E8"
 }

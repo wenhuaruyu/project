@@ -1,3 +1,33 @@
 <view class="container">
-  <view class="card">攻略详情页面开发中</view>
+  <view wx:if="{{detail}}" class="card block">
+    <view class="title">{{detail.title}}</view>
+    <view class="meta">分类：{{detail.categoryLabel}}</view>
+    <view class="meta">距离：{{detail.displayDistance}} km</view>
+    <view class="meta">建议时长：{{detail.durationText}}</view>
+    <view class="meta">更新时间：{{detail.displayUpdatedAt}}</view>
+    <view class="meta">地址：{{detail.address}}</view>
+    <view class="action-row">
+      <button class="secondary-button action-btn" bindtap="copyAddress">复制地址</button>
+      <button class="secondary-button action-btn" bindtap="openLocation">一键导航</button>
+    </view>
+  </view>
+
+  <view wx:if="{{detail}}" class="card block">
+    <view class="section-title">攻略内容</view>
+    <view class="paragraph">{{detail.content}}</view>
+  </view>
+
+  <view wx:if="{{detail}}" class="card block">
+    <view class="section-title">交通方式</view>
+    <view class="meta" wx:if="{{detail.trafficWalk}}">步行：{{detail.trafficWalk}}</view>
+    <view class="meta" wx:if="{{detail.trafficBus}}">公交：{{detail.trafficBus}}</view>
+    <view class="meta" wx:if="{{detail.trafficTaxi}}">打车：{{detail.trafficTaxi}}</view>
+  </view>
+
+  <view wx:if="{{detail && detail.tips}}" class="card block">
+    <view class="section-title">注意事项</view>
+    <view class="paragraph">{{detail.tips}}</view>
+  </view>
+
+  <view wx:if="{{!loading && !detail}}" class="card">攻略不存在</view>
 </view>

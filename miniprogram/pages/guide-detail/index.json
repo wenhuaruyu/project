@@ -1,3 +1,5 @@
 {
-  "navigationBarTitleText": "攻略详情"
+  "navigationBarTitleText": "攻略详情",
+  "enablePullDownRefresh": true,
+  "backgroundColor": "#F8F3E8"
 }
